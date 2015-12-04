@@ -10,7 +10,7 @@ from numpy import *
 import load_csv as lc
 import operator
 
-def classify0(inX, dataSet, labels, k):
+def knn(inX, dataSet, labels, k):
     '''
     :param inX: 基础数据矩阵用来对其他数据进行分类距离的计算
     :param dataSet: 需要分类的数据集合
@@ -77,7 +77,7 @@ def datingClassTest(filename):
     numTestVecs = int(m*hoRatio)
     errorCount = 0.0
     for i in range(numTestVecs):
-        classifierResult = classify0(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],3)
+        classifierResult = knn(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],3)
         print "classifier into : %d, real answer is: %d" % (classifierResult, datingLabels[i])
         if (classifierResult != datingLabels[i]): errorCount += 1.0
     print "error rate : %f \n" % (errorCount/float(numTestVecs))
