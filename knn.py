@@ -10,16 +10,16 @@ from numpy import *
 import load_csv as lc
 import operator
 
-def knn(inX, dataSet, labels, k):
+def knn(base, dataSet, labels, k):
     '''
-    :param inX: 基础数据矩阵用来对其他数据进行分类距离的计算
+    :param base: 基础数据矩阵用来对其他数据进行分类距离的计算
     :param dataSet: 需要分类的数据集合
     :param labels: 每一条记录真实属于哪一类的标签
     :param k: knn算法中所取的top数量
     :return sortedClassCount:返回排序好的分类数据，是labels值
     '''
     dataSetSize = dataSet.shape[0]
-    diffMat = tile(inX, (dataSetSize,1)) - dataSet # 重复 max(datasetsize,1) 次
+    diffMat = tile(base, (dataSetSize,1)) - dataSet # 重复 max(datasetsize,1) 次
     sqDiffMat = diffMat**2
     sqDistances = sqDiffMat.sum(axis=1)
     distances = sqDistances**0.5
@@ -31,7 +31,7 @@ def knn(inX, dataSet, labels, k):
     sortedClassCount = sorted(classCount.iteritems(), key=operator.itemgetter(1), reverse=True)
     return sortedClassCount[0][0]
 
-def file2matrix(filename):
+def createMatrix(filename):
     '''
     :param filename: 需要处理成矩阵的数据文件
     :return returnMat,classLabelVector:数据矩阵，数据标签矩阵
@@ -51,7 +51,7 @@ def file2matrix(filename):
     print "record count = %d \n" % index
     return returnMat,classLabelVector
     
-def autoNorm(dataSet):
+def Normalized(dataSet):
     '''
     :param dataSet: 数据矩阵
     :return normDataSet, ranges, minVals：归一化后的矩阵，取值范围，最小值
@@ -65,14 +65,14 @@ def autoNorm(dataSet):
     normDataSet = normDataSet/tile(ranges, (m,1))   #归一化后数值 =（真实数据-最小值）/（最大值-最小值）
     return normDataSet, ranges, minVals
    
-def datingClassTest(filename):
+def data_test(filename):
     '''
     :param filename: 需要进行分类的文件
     :return: 输出分类结果，以及错误率等
     '''
     hoRatio = 0.10      # 测数数据占数据的百分比
-    datingDataMat,datingLabels = file2matrix(filename)
-    normMat, ranges, minVals = autoNorm(datingDataMat)
+    datingDataMat,datingLabels = createMatrix(filename)
+    normMat, ranges, minVals = Normalized(datingDataMat)
     m = normMat.shape[0]
     numTestVecs = int(m*hoRatio)
     errorCount = 0.0
@@ -85,7 +85,7 @@ def datingClassTest(filename):
 
 def start_test():
     '''
-    导入数据文件，测试knn算法
+    导入数据文件，测试knn算法开始函数
     '''
     lc.load_csv_data()
-    datingClassTest('/home/ch/pycharm_code/analytics_edx_data/edx_a.csv')
+    data_test('/home/ch/pycharm_code/analytics_edx_data/edx_a.csv')
