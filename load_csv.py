@@ -1,5 +1,4 @@
 # -*- coding: utf-8
-__author__ = 'ch'
 
 import pandas as pd
 def load_csv_to_knn():

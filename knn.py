@@ -70,17 +70,17 @@ def data_test(filename):
     :param filename: 需要进行分类的文件
     :return: 输出分类结果，以及错误率等
     '''
-    hoRatio = 0.10      # 测数数据占数据的百分比
-    datingDataMat,datingLabels = createMatrix(filename)
-    normMat, ranges, minVals = Normalized(datingDataMat)
+    how = 0.10      # 测数数据占数据的百分比
+    dataMat,dataLabels = createMatrix(filename)
+    normMat, ranges, minData = Normalized(dataMat)
     m = normMat.shape[0]
-    numTestVecs = int(m*hoRatio)
+    testNum = int(m*how)
     errorCount = 0.0
-    for i in range(numTestVecs):
-        classifierResult = knn(normMat[i,:],normMat[numTestVecs:m,:],datingLabels[numTestVecs:m],3)
-        print "classifier into : %d, real answer is: %d" % (classifierResult, datingLabels[i])
-        if (classifierResult != datingLabels[i]): errorCount += 1.0
-    print "error rate : %f \n" % (errorCount/float(numTestVecs))
+    for i in range(testNum):
+        classifierResult = knn(normMat[i,:],normMat[testNum:m,:],dataLabels[testNum:m],3)
+        print "classifier into : %d, real answer is: %d" % (classifierResult, dataLabels[i])
+        if (classifierResult != dataLabels[i]): errorCount += 1.0
+    print "error rate : %f \n" % (errorCount/float(testNum))
     print "error count：%d \n" %errorCount
 
 def start_test():
@@ -89,3 +89,19 @@ def start_test():
     '''
     lc.load_csv_data()
     data_test('/home/ch/pycharm_code/analytics_edx_data/edx_a.csv')
+
+def displayData(filename):
+    how = 0.10      # 测数数据占数据的百分比
+    dataMat,dataLabels = createMatrix(filename)
+    normMat, ranges, minData = Normalized(dataMat)
+    m = normMat.shape[0]
+    testNum = int(m*how)
+    errorCount = 0.0
+    classifierData = []
+    realData = []
+    for i in range(testNum):
+        classifierResult = knn(normMat[i,:],normMat[testNum:m,:],dataLabels[testNum:m],3)
+        classifierData.append(classifierResult)
+        realData.append(dataLabels[i])
+        if (classifierResult != dataLabels[i]): errorCount += 1.0
+    return testNum,(errorCount/float(testNum)), errorCount, classifierData, realData
