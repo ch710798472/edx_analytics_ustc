@@ -4,20 +4,18 @@ Created by ch yy, 10/12/2015
 To recommended best match github user repository
 '''
 import requests
-from getpass import getpass
 import json
 from github import Github
 import networkx as nx
 from operator import itemgetter
-import sys
 from collections import Counter
 from networkx.readwrite import json_graph
 import webbrowser
+import os
 
 def start_test():
     client,repo,stargazers,user = getRespond()
     g = addTOGraph(repo,stargazers,user)
-    classify()
     addEdge(stargazers,client,g)
     getPopular(g)
     savaGraph1(g)
@@ -31,12 +29,12 @@ def start_test():
     displayGraph(g)
     webbrowser.open_new_tab("http://%s:%s/%s.html"%("localhost","9999", "display_githubRec"))
 
-def simpleDisplay():
+def simpleDisplay(ipaddress = "localhost",port = "9999"):
     '''
     利用每次处理后保存的图来进行恢复展示
     :return:
     '''
-    g = nx.read_gpickle("/home/ch/github.gpickle.1")
+    g = nx.read_gpickle("github.1")
     print nx.info(g)
     print
 
@@ -44,10 +42,12 @@ def simpleDisplay():
     h = g.subgraph(mtsw_users)
 
     print nx.info(h)
-
+    print
     d = json_graph.node_link_data(h)
     json.dump(d, open('force.json', 'w'))
-    webbrowser.open_new_tab("http://%s:%s/%s.html"%("localhost","9999", "display_githubRec"))
+    cmdstr = "python3 -m http.server %s" % port
+    webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "display_githubRec"))
+    os.system(cmdstr)
 
 def getAuth():
     '''
@@ -67,12 +67,12 @@ def getAuth():
     print
     print "Your OAuth token is", response.json()['token']
 
-def getRespond():
+def getRespond(user = 'edx',repo = 'edx-analytics-pipeline'):
     '''
-    获取原始仓库或者用户的一切API请求
+    获取原始仓库或者用户的一切API请求,参数是配置查找的用户以及公开仓库
     :return: client,repo,stargazers,user
     '''
-    url = "https://api.github.com/repos/edx/edx-analytics-pipeline/stargazers"
+    url = "https://api.github.com/repos/%s/%s/stargazers" % (user, repo)
     response = requests.get(url)
 
     print json.dumps(response.json()[0], indent=1)
@@ -84,15 +84,16 @@ def getRespond():
     ACCESS_TOKEN = '9ebc1b3f8357b7b5a208daafd8a65a7ead7eba19'
 
     # 这里配置查找的用户以及公开仓库
-    USER = 'edx'
-    REPO = 'edx-analytics-pipeline'
+    USER = user
+    REPO = repo
 
     client = Github(ACCESS_TOKEN, per_page=100)
     user = client.get_user(USER)
     repo = user.get_repo(REPO)
 
     stargazers = [ s for s in repo.get_stargazers() ] #可以先对这些人数进行分类限制
-    print "Number of stargazers", len(stargazers) #人数众多，速度太慢
+    print "关注人的数目 ", len(stargazers) #人数众多，速度太慢
+    print
     return client,repo,stargazers,user #在这里可以控制人数
 
 def addTOGraph(repo,stargazers,user):
@@ -110,43 +111,23 @@ def addTOGraph(repo,stargazers,user):
         g.add_node(sg.login + '(user)', type='user')
         g.add_edge(sg.login + '(user)', repo.name + '(repo)', type='gazes')
         print sg.login + '(user)'
-    print nx.info(g)
-    print
-    print g.node['edx-analytics-pipeline(repo)']
-    print g.node['edx(user)']
-    print
-    print g['edx(user)']['edx-analytics-pipeline(repo)']
-
-    print
-    print g['edx(user)']
-    print g['edx-analytics-pipeline']
-    print
-    print g.in_edges(['edx(user)'])
-    print g.out_edges(['edx(user)'])
-    print
-    print g.in_edges(['edx-analytics-pipeline(repo)'])
-    print g.out_edges(['edx-analytics-pipeline(repo)'])
+    # print nx.info(g)
+    # print
+    # print g.node['edx-analytics-pipeline(repo)']
+    # print g.node['edx(user)']
+    # print
+    # print g['edx(user)']['edx-analytics-pipeline(repo)']
+    #
+    # print
+    # print g['edx(user)']
+    # print g['edx-analytics-pipeline']
+    # print
+    # print g.in_edges(['edx(user)'])
+    # print g.out_edges(['edx(user)'])
+    # print
+    # print g.in_edges(['edx-analytics-pipeline(repo)'])
+    # print g.out_edges(['edx-analytics-pipeline(repo)'])
     return g
-
-def classify():
-    '''
-    计算图的中心度度量
-    '''
-    kkg = nx.generators.small.krackhardt_kite_graph()
-
-    print "点度中心度"
-    print sorted(nx.degree_centrality(kkg).items(),
-             key=itemgetter(1), reverse=True)
-    print
-
-    print "中介中心度"
-    print sorted(nx.betweenness_centrality(kkg).items(),
-             key=itemgetter(1), reverse=True)
-    print
-
-    print "接近中心度"
-    print sorted(nx.closeness_centrality(kkg).items(),
-             key=itemgetter(1), reverse=True)
 
 def addEdge(stargazers,client,g):
     '''
@@ -158,11 +139,11 @@ def addEdge(stargazers,client,g):
                 if follower.login + '(user)' in g:
                     g.add_edge(follower.login + '(user)', sg.login + '(user)', type='follows')
         except Exception, e:
-            print >> sys.stderr, "Encountered an error fetching followers for",sg.login, "Skipping."
-            print >> sys.stderr, e
+            print "获取追随者失败，跳过", sg.login, e
 
-        print "Processed", i+1, " stargazers. Num nodes/edges in graph", g.number_of_nodes(), "/", g.number_of_edges()
-        print "Rate limit remaining", client.rate_limiting
+        print "正在处理第", i+1, " 个关注者。"
+        print "图中的 节点数/边数", g.number_of_nodes(), "/", g.number_of_edges()
+        print "API请求剩余数目比", client.rate_limiting
 
 def getPopular(g):
     print nx.info(g)
@@ -171,22 +152,20 @@ def getPopular(g):
     print len([e for e in g.edges_iter(data=True) if e[2]['type'] == 'follows'])
     print
 
-    print len([e
-           for e in g.edges_iter(data=True)
-               if e[2]['type'] == 'follows' and e[1] == 'edx(user)'])
+    print len([e for e in g.edges_iter(data=True) if e[2]['type'] == 'follows' and e[1] == 'edx(user)'])
     print
 
     print sorted([n for n in g.degree_iter()], key=itemgetter(1), reverse=True)[:10]
     print
 
-    print len(g.out_edges('edx(user)'))
-    print len(g.in_edges('edx(user)'))
-    print
+    # print len(g.out_edges('edx(user)'))
+    # print len(g.in_edges('edx(user)'))
+    # print
 
     c = Counter([e[1] for e in g.edges_iter(data=True) if e[2]['type'] == 'follows'])
-    popular_users = [ (u, f) for (u, f) in c.most_common() if f > 1 ]
-    print "Number of popular users", len(popular_users)
-    print "Top 10 popular users:", popular_users[:10]
+    popular_users = [(u, f) for (u, f) in c.most_common() if f > 1]
+    print "受欢迎的用户数目：", len(popular_users)
+    print "最受欢迎的是个用户：", popular_users[:10]
 
 def savaGraph1(g):
     '''
@@ -195,12 +174,12 @@ def savaGraph1(g):
     nx.write_gpickle(g, "github.1")
     # 如果恢复图的信息可以这么使用，g = nx.read_gpickle("github.1")
 
-def top10(g):
+def top10(g, superNode = 'edx-analytics-pipeline(repo)'):
     '''
     计算每种度量的top10
     '''
     h = g.copy()
-    h.remove_node('edx-analytics-pipeline(repo)')
+    h.remove_node(superNode) #之所以要去掉原始中心仓库，是因为它是超节点，占用太多的节点关系和边的关系
     dc = sorted(nx.degree_centrality(h).items(), key=itemgetter(1), reverse=True)
 
     print "点度中心度"
@@ -241,7 +220,7 @@ def saveGraph2(g):
 
 def findOutgoingEdges(g):
     '''
-    承接additional
+    承接additional,探索添加加型资源库之后的分析结果
     '''
     print nx.info(g)
     print
@@ -265,7 +244,9 @@ def findOutgoingEdges(g):
 
     print "Supernode candidates"
     print sorted([(n, len(g.out_edges(n)))
-              for n in g.nodes_iter() if g.node[n]['type'] == 'user' and len(g.out_edges(n)) > 500],key=itemgetter(1), reverse=True)
+                  for n in g.nodes_iter()
+                  if g.node[n]['type'] == 'user' and len(g.out_edges(n)) > 500]
+                 ,key=itemgetter(1), reverse=True)
 
 def addProgramLanguage(g):
     '''
@@ -317,16 +298,14 @@ def saveGraph3(g):
     nx.write_gpickle(g, "github.3")
 
 def displayGraph(g):
-    print "Stats on the full graph"
     print nx.info(g)
     print
 
     mtsw_users = [n for n in g if g.node[n]['type'] == 'user']
     h = g.subgraph(mtsw_users)
 
-    print "Stats on the extracted subgraph"
     print nx.info(h)
-
+    print
     d = json_graph.node_link_data(h)
     json.dump(d, open('force.json', 'w'))
 
