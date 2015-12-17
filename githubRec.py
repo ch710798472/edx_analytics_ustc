@@ -34,6 +34,12 @@ def simpleDisplay(ipaddress = "localhost",port = "9999"):
     利用每次处理后保存的图来进行恢复展示
     :return:
     '''
+    # client,repo,stargazers,user = getRespond()
+    # g = addTOGraph(repo,stargazers,user)
+    # addEdge(stargazers,client,g)
+    # getPopular(g)
+    # savaGraph1(g)
+    # top10(g)
     g = nx.read_gpickle("github.1")
     print nx.info(g)
     print

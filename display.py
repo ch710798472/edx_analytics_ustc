@@ -7,6 +7,11 @@ import numpy as np
 import d3py
 import pandas
 import knn
+import networkx as nx
+import json
+import webbrowser
+import os
+from networkx.readwrite import json_graph
 def display_knn():
     '''
     用D3.JS展示Knn算法的运行结果
@@ -29,3 +34,23 @@ def display_knn():
         fig += d3py.xAxis('x', label="test number")
         fig += d3py.yAxis('y', label="test label")
         fig.show()
+
+def display_githubRec(ipaddress = "localhost",port = "9999"):
+    '''
+    利用每次处理后保存的图来进行恢复展示
+    :return:
+    '''
+    g = nx.read_gpickle("github.1")
+    print nx.info(g)
+    print
+
+    mtsw_users = [n for n in g if g.node[n]['type'] == 'user']
+    h = g.subgraph(mtsw_users)
+
+    print nx.info(h)
+    print
+    d = json_graph.node_link_data(h)
+    json.dump(d, open('force.json', 'w'))
+    cmdstr = "python3 -m http.server %s" % port
+    webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "display_githubRec"))
+    os.system(cmdstr)
