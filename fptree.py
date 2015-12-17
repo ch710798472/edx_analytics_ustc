@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
-Created by ch yy ,07/12/2015
+copyright@USTC SSE
+author by ch yy in suzhou ,07/12/2015
 FP-Growth algorithm find frequent pattern
 '''
 class treeNode:

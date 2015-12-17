@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
-Created on 28/11/2015
-By chen hao ,yang yang
-In suzhou at ustc sse
+Copyright@USTC SSE
+Author by ch yy in suzhou ,28/11/2015
 Find out nevents, ndays_act, nplay_video, nchapters, nforum_posts weather or not determined on
          viewed,explored,certified,grade
 '''

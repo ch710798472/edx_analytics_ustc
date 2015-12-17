@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
-Created by ch yy, 10/12/2015
+Copyright@USTC SSE
+Author by ch yy in suzhou ,10/12/2015
 To recommended best match github user repository
 '''
 import requests

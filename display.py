@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 '''
-Created by ch yy, 08/12/2015
+Copyright@USTC SSE
+Author by ch yy in suzhou ,08/12/2015
 Use d3.js to display
 '''
 import numpy as np

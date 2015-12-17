@@ -1,5 +1,8 @@
 # -*- coding: utf-8
-
+'''
+Copyright@USTC SSE
+Author by ch yy in suzhou ,28/11/2015
+'''
 import pandas as pd
 def load_csv_to_knn():
     '''
