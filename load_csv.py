@@ -28,7 +28,7 @@ def load_csv_to_knn():
     # print edx_data['course_id'].describe()#一些简单的统计信息
     #print edx_data['incomplete_flag'].sum()
     # 构造数据集合,'nevents', 'ndays_act', 'nplay_video', 'nchapters', 'nforum_posts', 'incomplete_flag'为每一列的特征含义
-    edx_data.to_csv('edx_a.csv', index=False, header=False, sep='\t',
+    edx_data.to_csv('edx_knn.csv', index=False, header=False, sep='\t',
                     cols=['nevents', 'ndays_act', 'nplay_video', 'nchapters', 'nforum_posts', 'incomplete_flag']
                     ,na_rep='0')
 

@@ -19,7 +19,7 @@ def display_knn():
     :return:
     '''
     testNum,errorRate, errorCount, classifierData, realData = knn.displayData(
-        '/home/ch/pycharm_code/analytics_edx_data/edx_a.csv');
+        '/home/ch/pycharm_code/analytics_edx_data/edx_knn.csv');
     x = np.linspace(0,testNum,testNum)
     df = pandas.DataFrame({
     'x' : x,
@@ -51,7 +51,7 @@ def display_githubRec(ipaddress = "localhost",port = "9999"):
     print nx.info(h)
     print
     d = json_graph.node_link_data(h)
-    json.dump(d, open('force.json', 'w'))
+    json.dump(d, open('githubRec.json', 'w'))
     cmdstr = "python3 -m http.server %s" % port
     webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "display_githubRec"))
     os.system(cmdstr)

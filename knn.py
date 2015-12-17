@@ -87,7 +87,7 @@ def start_test():
     导入数据文件，测试knn算法开始函数
     '''
     lc.load_csv_data()
-    data_test('/home/ch/pycharm_code/analytics_edx_data/edx_a.csv')
+    data_test('/home/ch/pycharm_code/analytics_edx_data/edx_knn.csv')
 
 def displayData(filename):
     how = 0.10      # 测数数据占数据的百分比
