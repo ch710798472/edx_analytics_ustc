@@ -12,7 +12,7 @@ da.display_display_githubRec()
 da.display_fptree()
 ad.display_svd()
 ```
-
+###your might install numpy,networkx,github,pandas tools first.
 ##Copyright(C)USTC SSE.
 ##Author by ch yy in SuZhou.
 
