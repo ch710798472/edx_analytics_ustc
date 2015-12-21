@@ -15,7 +15,7 @@ import json
 import webbrowser
 import os
 from networkx.readwrite import json_graph
-def display_knn(ipaddress = "localhost",port = "9999"):
+def knn(ipaddress = "localhost",port = "9999"):
     '''
     用D3.JS展示Knn算法的运行结果
     :return:
@@ -40,7 +40,7 @@ def display_knn(ipaddress = "localhost",port = "9999"):
         fig.show()
 
 
-def display_githubRec(ipaddress = "localhost",port = "8989"):
+def githubRec(ipaddress = "localhost",port = "8989"):
     '''
     利用每次处理后保存的图来进行恢复展示
     :return:
@@ -60,11 +60,11 @@ def display_githubRec(ipaddress = "localhost",port = "8989"):
     webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "display_githubRec"))
     # os.system(cmdstr)
 
-def display_fptree():
+def fptree():
     fptree.start_test()
 
-def display_svd():
+def svd():
     svd.start_test()
 
 if __name__ == '__main__':
-    display_githubRec()
+    githubRec()
