@@ -15,7 +15,7 @@ import json
 import webbrowser
 import os
 from networkx.readwrite import json_graph
-def display_knn(ipaddress = "localhost",port = "8989"):
+def display_knn(ipaddress = "localhost",port = "9999"):
     '''
     用D3.JS展示Knn算法的运行结果
     :return:
@@ -31,8 +31,8 @@ def display_knn(ipaddress = "localhost",port = "8989"):
 
     print "testNummber = %d \n" % testNum, "error rate : %f \n" % (errorCount/float(testNum)), "error count：%d \n" % errorCount
 
-    webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "disply_knn"))
-    with d3py.PandasFigure(df, 'disply_knn', width=20000, height=200,port = 8989) as fig:
+    webbrowser.open_new_tab("http://%s:%s/%s.html" % (ipaddress, port, "disply_knn"))
+    with d3py.PandasFigure(df, 'disply_knn', width=20000, height=200, port = int(port)) as fig:
         fig += d3py.geoms.Line('x', 'y', stroke='BlueViolet')
         fig += d3py.geoms.Line('x', 'z', stroke='DeepPink')
         fig += d3py.xAxis('x', label="test number")
@@ -56,9 +56,9 @@ def display_githubRec(ipaddress = "localhost",port = "8989"):
     print
     d = json_graph.node_link_data(h)
     json.dump(d, open('githubRec.json', 'w'))
-    cmdstr = "python3 -m http.server %s" % port
+    # cmdstr = "python3 -m http.server %s" % port
     webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "display_githubRec"))
-    os.system(cmdstr)
+    # os.system(cmdstr)
 
 def display_fptree():
     fptree.start_test()
