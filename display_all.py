@@ -7,7 +7,7 @@ Use d3.js to display
 import numpy as np
 import d3py
 import pandas
-import knn
+import knn as knn1
 import fptree
 import svd
 import networkx as nx
@@ -20,7 +20,7 @@ def knn(ipaddress = "localhost",port = "9999"):
     用D3.JS展示Knn算法的运行结果
     :return:
     '''
-    testNum,errorRate, errorCount, classifierData, realData = knn.displayData(
+    testNum,errorRate, errorCount, classifierData, realData = knn1.displayData(
         'edx_knn.csv');
     x = np.linspace(0,testNum,testNum)
     df = pandas.DataFrame({
