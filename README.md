@@ -5,10 +5,11 @@
 ###knn algorithm to find what determine the high grade.
 ####get start to use display_all.py file with commend
 ```
+python start_sercive.py 8989
 python
 import display_all as da
 da.display_knn()
-da.display_display_githubRec()
+da.display_githubRec()
 da.display_fptree()
 ad.display_svd()
 ```

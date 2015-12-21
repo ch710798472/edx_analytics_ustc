@@ -21,7 +21,7 @@ def display_knn(ipaddress = "localhost",port = "9999"):
     :return:
     '''
     testNum,errorRate, errorCount, classifierData, realData = knn.displayData(
-        '/home/ch/pycharm_code/analytics_edx_data/edx_knn.csv');
+        'edx_knn.csv');
     x = np.linspace(0,testNum,testNum)
     df = pandas.DataFrame({
     'x' : x,
