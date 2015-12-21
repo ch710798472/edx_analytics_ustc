@@ -8,8 +8,8 @@ import numpy as np
 import d3py
 import pandas
 import knn as knn1
-import fptree
-import svd
+import fptree as fptree1
+import svd as svd1
 import networkx as nx
 import json
 import webbrowser
@@ -61,10 +61,10 @@ def githubRec(ipaddress = "localhost",port = "8989"):
     # os.system(cmdstr)
 
 def fptree():
-    fptree.start_test()
+    fptree1.start_test()
 
 def svd():
-    svd.start_test()
+    svd1.start_test()
 
 if __name__ == '__main__':
     githubRec()

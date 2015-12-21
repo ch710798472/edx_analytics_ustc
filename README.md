@@ -9,7 +9,7 @@ python start_service.py 8989
 ```
 ####then,type commend python or ipython notebook,
 ```
-import display_all as da
+import display as da
 da.knn()
 da.githubRec()
 da.fptree()
