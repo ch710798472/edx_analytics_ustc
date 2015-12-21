@@ -5,7 +5,7 @@
 ###knn algorithm to find what determine the high grade.
 ####Get start to use display_all.py file with commend
 ```
-python start_sercive.py 8989
+python start_service.py 8989
 ```
 ####then,type commend python or ipython notebook,
 ```
