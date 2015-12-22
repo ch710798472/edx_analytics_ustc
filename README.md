@@ -17,6 +17,6 @@ ad.svd()
 ```
 
 ###your might install numpy,networkx,github,pandas,ipython-notebook tools first.
-##Copyright(C)USTC SSE.
 ##Author by ch yy in SuZhou.
+##USTC SSE
 
