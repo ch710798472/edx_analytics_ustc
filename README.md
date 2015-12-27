@@ -11,7 +11,7 @@ import display as da
 da.knn()
 da.githubRec()
 da.fptree()
-ad.svd()
+da.svd()
 ```
 
 ###Your might install numpy,networkx,github,pandas,ipython-notebook tools first.
