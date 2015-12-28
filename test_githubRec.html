@@ -7,27 +7,20 @@
     <style>
         .link {
             stroke: #ccc;
-            stroke-width: 2px;
-        }
-        .linkblue {
-            stroke: #0aa;
-            stroke-width: 2px;
         }
         .node text {
             pointer-events: none;
             font: 10px sans-serif;
         }
-        .linetext {
-            font-size: 12px ;
-            font-family: SimSun;
-            fill:#0000FF;
-            fill-opacity:0.0;
+        .titletext {
+            font-size: 30px ;
+            text-align:center;
         }
     </style>
 </head>
 <body>
-<div id="chart"></div>
-<p>this is test paraphrase</p>
+<div class="titletext" style="color:#0000ff">To recommended best match github user repository</div>
+
 <script>
     var width = 1000,
             height = 600,
@@ -43,7 +36,7 @@
             .charge(-100)
             .size([width, height]);//图形限定的范围
 
-    d3.json("1.json", function(json) {
+    d3.json("githubRec.json", function(json) {
         force.nodes(json.nodes)
                 .links(json.links)
                 .start();
@@ -51,12 +44,7 @@
         var link = svg.selectAll(".link")
                 .data(json.links)
                 .enter().append("line")
-                .attr("class", function(d){
-                    if(d.type == "follows")
-                        return "linkblue";
-                    else
-                        return "link";
-                })　
+                .attr("class", "link")
                 .on("mouseover",function(d){
                     //显示连接线上的文字
                     var x1 = d3.select(this).attr("x1");
@@ -85,13 +73,13 @@
                             .attr("font-weight", "bold")
                             .attr("fill", "black")
                             .text(d.source.id + "-->" + d.target.id);
-//                    console.log("link in");
+                    console.log("link in");
 //                    console.log(d);
                 })
                 .on("mouseout", function() {
                 // 删除提示条
                     d3.select("#linktip").remove();
-//                    console.log("link out");
+                    console.log("link out");
                 });
 
         var color = d3.scale.category10();
@@ -135,7 +123,7 @@
                 .append("title")
                 .text(function(d) {
                     //返回每个节点用户信息
-                    return "节点信息：" + d.id;
+                    return "用户信息：" + d.id;
                 });
 
         node.append("text")
