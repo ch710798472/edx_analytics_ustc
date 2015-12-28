@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>pie</title>
+    <script type="text/javascript" src="d3/d3.js"></script>
+    <style>
+
+    </style>
+</head>
+<body>
+
+    <script type="text/javascript">
+        var dataset = new Array();//存储数据
+        var datalebel = new Array();//存储标签
+        var color = d3.scale.category10();
+        var pie = d3.layout.pie();
+        var w = 800;
+        var h = 800;
+        var outerRadius = 300 / 2;
+        var innerRadius = 0;
+        var arc = d3.svg.arc()
+                .innerRadius(innerRadius)
+                .outerRadius(outerRadius);
+        var svg = d3.select("body")
+                .append("svg")
+                .attr("width", w)
+                .attr("height", h);
+        var i;
+        d3.json("1.1.pie", function(json) {
+//            console.log(d);
+            i = 0;
+            for(var key in json){
+//                console.log(d[key]);
+                datalebel[i] = json[key];
+                dataset[i++] = json[key][1];
+            }
+
+            var piedata = pie(dataset);
+
+            //可移动的饼状图
+            var gAll = svg.append("g")
+					  .attr("transform","translate("　+　outerRadius　+　","　+　outerRadius　+　")");
+            var drag = d3.behavior.drag()
+                    .origin(function(d) { return d; })
+                    .on("drag", dragmove);
+
+            var arcs = gAll.selectAll("g.arc")
+                    .data(piedata)
+                    .enter()
+                    .append("g")
+//                    .attr("class", "arc")
+//                    .attr("transform", "translate(" + outerRadius + ", " + outerRadius + ")")
+                    .each(function(d){
+                        //指定当前区域的平移量
+                        d.dx = 0;
+                        d.dy = 0;
+                    })
+                    .on("mouseover",function(d,i){
+                        //鼠标移过提示
+                        var xPosition = 150;
+                        var yPosition = 150;
+                        svg.append("text")
+                                .attr("id", "linktip")
+                                .attr("x", xPosition)
+                                .attr("y", yPosition)
+                                .attr("text-anchor", "middle")
+                                .attr("font-family", "sans-serif")
+                                .attr("font-size", "30px")
+                                .attr("font-weight", "bold")
+                                .attr("fill", "black")
+                                .text(function(d) {
+                                    console.log(datalebel[i][0])
+                                    return datalebel[i][0];
+                                });
+                    })
+                    .on("mouseout",function(d){
+                        //鼠标移除隐去提示
+                        d3.select("#linktip").remove();
+                    })
+                    .call(drag);
+
+            arcs.append("path")
+                    .attr("fill", function(d, i) {
+                        return color(i);
+                    })
+                    .attr("d", arc);
+            arcs.append("text")
+                    .attr("transform", function(d) {
+                        return "translate(" + arc.centroid(d) + ")";
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("font-size", "16px")
+                    .text(function(d,i) {
+                        return datalebel[i][0];
+                    });
+
+            function dragmove(d) {
+                d.dx += d3.event.dx;
+                d.dy += d3.event.dy;
+                d3.select(this)
+                        .attr("transform","translate("+d.dx+","+d.dy+")");
+            }
+
+        });
+    </script>
+</body>
+</html>

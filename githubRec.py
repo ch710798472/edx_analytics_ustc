@@ -14,20 +14,20 @@ from networkx.readwrite import json_graph
 import webbrowser
 import os
 
-def start_test():
+def start_test(filename):
     client,repo,stargazers,user = getRespond()
     g = addTOGraph(repo,stargazers,user)
     addEdge(stargazers,client,g)
     getPopular(g)
-    savaGraph1(g)
+    savaGraph1(g,filename)
     top10(g)
     additional(stargazers,client,g) # 不必须，耗时可不必执行
-    saveGraph2(g)
+    saveGraph2(g,filename)
     findOutgoingEdges(g) # 不必须，耗时可不必执行
     addProgramLanguage(g) # 不必须，耗时可不必执行
     stats(g) # 不必须，耗时可不必执行
-    saveGraph3(g)
-    displayGraph(g)
+    saveGraph3(g,filename)
+    displayGraph(g,filename)
     webbrowser.open_new_tab("http://%s:%s/%s.html"%("localhost","9999", "display_githubRec"))
 
 def simpleDisplay(ipaddress = "localhost",port = "9999"):
@@ -74,12 +74,12 @@ def getAuth():
     print
     print "Your OAuth token is", response.json()['token']
 
-def getRespond(user = 'edx',repo = 'edx-analytics-pipeline'):
+def getRespond(user1 = 'edx',repo1 = 'edx-documentation'):
     '''
     获取原始仓库或者用户的一切API请求,参数是配置查找的用户以及公开仓库
     :return: client,repo,stargazers,user
     '''
-    url = "https://api.github.com/repos/%s/%s/stargazers" % (user, repo)
+    url = "https://api.github.com/repos/%s/%s/stargazers" % (user1, repo1)
     response = requests.get(url)
 
     print json.dumps(response.json()[0], indent=1)
@@ -88,18 +88,19 @@ def getRespond(user = 'edx',repo = 'edx-analytics-pipeline'):
     for (k,v) in response.headers.items():
         print k, "=>", v
 
-    ACCESS_TOKEN = '9ebc1b3f8357b7b5a208daafd8a65a7ead7eba19'
+    # ACCESS_TOKEN = '9ebc1b3f8357b7b5a208daafd8a65a7ead7eba19'
+    ACCESS_TOKEN = '1161b718b9555cd76bf7ff9070c8f1ba300ea885'
 
     # 这里配置查找的用户以及公开仓库
-    USER = user
-    REPO = repo
+    USER = user1
+    REPO = repo1
 
     client = Github(ACCESS_TOKEN, per_page=100)
     user = client.get_user(USER)
     repo = user.get_repo(REPO)
 
     stargazers = [ s for s in repo.get_stargazers() ] #可以先对这些人数进行分类限制
-    print "关注人的数目 ", len(stargazers) #人数众多，速度太慢
+    print "关注人的数目: ", len(stargazers) #人数众多，速度太慢
     print
     return client,repo,stargazers,user #在这里可以控制人数
 
@@ -112,45 +113,31 @@ def addTOGraph(repo,stargazers,user):
     :return:
     '''
     g = nx.DiGraph()
-    g.add_node(repo.name + '(repo)', type='repo', lang=repo.language, owner=user.login)
+    g.add_node(repo.name + '(r)', type='repo', lang=repo.language, owner=user.login)
 
     for sg in stargazers:
-        g.add_node(sg.login + '(user)', type='user')
-        g.add_edge(sg.login + '(user)', repo.name + '(repo)', type='gazes')
-        print sg.login + '(user)'
+        g.add_node(sg.login + '(u)', type='user')
+        g.add_edge(sg.login + '(u)', repo.name + '(r)', type='gazes')
+        print sg.login + '(u)'
+
     # print nx.info(g)
     # print
-    # print g.node['edx-analytics-pipeline(repo)']
-    # print g.node['edx(user)']
-    # print
-    # print g['edx(user)']['edx-analytics-pipeline(repo)']
-    #
-    # print
-    # print g['edx(user)']
-    # print g['edx-analytics-pipeline']
-    # print
-    # print g.in_edges(['edx(user)'])
-    # print g.out_edges(['edx(user)'])
-    # print
-    # print g.in_edges(['edx-analytics-pipeline(repo)'])
-    # print g.out_edges(['edx-analytics-pipeline(repo)'])
+
     return g
 
 def addEdge(stargazers,client,g):
     '''
-    # 添加关注边，构建新区图谱，以获取最受欢迎的top10
+    # 添加关注边，构建兴趣图谱，以获取最受欢迎的top10
     '''
     for i, sg in enumerate(stargazers):
         try:
             for follower in sg.get_followers():
-                if follower.login + '(user)' in g:
-                    g.add_edge(follower.login + '(user)', sg.login + '(user)', type='follows')
+                if follower.login + '(u)' in g:
+                    g.add_edge(follower.login + '(u)', sg.login + '(u)', type='follows')
         except Exception, e:
             print "获取追随者失败，跳过", sg.login, e
 
         print "正在处理第", i+1, " 个关注者。"
-        print "图中的 节点数/边数", g.number_of_nodes(), "/", g.number_of_edges()
-        print "API请求剩余数目比", client.rate_limiting
 
 def getPopular(g):
     print nx.info(g)
@@ -159,29 +146,26 @@ def getPopular(g):
     print len([e for e in g.edges_iter(data=True) if e[2]['type'] == 'follows'])
     print
 
-    print len([e for e in g.edges_iter(data=True) if e[2]['type'] == 'follows' and e[1] == 'edx(user)'])
+    print len([e for e in g.edges_iter(data=True) if e[2]['type'] == 'follows' and e[1] == 'edx(u)'])
     print
 
     print sorted([n for n in g.degree_iter()], key=itemgetter(1), reverse=True)[:10]
     print
 
-    # print len(g.out_edges('edx(user)'))
-    # print len(g.in_edges('edx(user)'))
-    # print
-
     c = Counter([e[1] for e in g.edges_iter(data=True) if e[2]['type'] == 'follows'])
     popular_users = [(u, f) for (u, f) in c.most_common() if f > 1]
     print "受欢迎的用户数目：", len(popular_users)
-    print "最受欢迎的是个用户：", popular_users[:10]
+    print "最受欢迎的十个用户：", popular_users[:10]
 
-def savaGraph1(g):
+def savaGraph1(g,name):
     '''
     暂存图节点边的各种信息，因为对于有的star比较多的仓库计算一次不容易
     '''
-    nx.write_gpickle(g, "github.1")
+    filename = name + ".1"
+    nx.write_gpickle(g, filename)
     # 如果恢复图的信息可以这么使用，g = nx.read_gpickle("github.1")
 
-def top10(g, superNode = 'edx-analytics-pipeline(repo)'):
+def top10(g, superNode = 'edx-documentation(repo)'):
     '''
     计算每种度量的top10
     '''
@@ -213,17 +197,16 @@ def additional(stargazers,client,g):
         print sg.login
         try:
             for starred in sg.get_starred()[:MAX_REPOS]: # Slice to avoid supernodes
-                g.add_node(starred.name + '(repo)', type='repo', lang=starred.language, owner=starred.owner.login)
-                g.add_edge(sg.login + '(user)', starred.name + '(repo)', type='gazes')
+                g.add_node(starred.name + '(r)', type='repo', lang=starred.language, owner=starred.owner.login)
+                g.add_edge(sg.login + '(u)', starred.name + '(r)', type='gazes')
         except Exception, e: #ssl.SSLError:
-            print "Encountered an error fetching starred repos for", sg.login, "Skipping."
+            print "获取加星仓库失败　", sg.login, "跳过."
 
-        print "Processed", i+1, "stargazers' starred repos"
-        print "Num nodes/edges in graph", g.number_of_nodes(), "/", g.number_of_edges()
-        print "Rate limit", client.rate_limiting
+        print "正在处理", i+1, "加星的仓库"
 
-def saveGraph2(g):
-    nx.write_gpickle(g, "github.2")
+def saveGraph2(g, name):
+    filename = name + ".2"
+    nx.write_gpickle(g, filename)
 
 def findOutgoingEdges(g):
     '''
@@ -241,12 +224,12 @@ def findOutgoingEdges(g):
 
     print "Respositories that edx has bookmarked"
     print [(n,g.node[n]['lang'])
-           for n in g['edx(user)'] if g['edx(user)'][n]['type'] == 'gazes']
+           for n in g['edx(u)'] if g['edx(u)'][n]['type'] == 'gazes']
     print
 
     print "Programming languages edx is interested in"
     print list(set([g.node[n]['lang']
-                for n in g['edx(user)'] if g['edx(user)'][n]['type'] == 'gazes']))
+                for n in g['edx(u)'] if g['edx(u)'][n]['type'] == 'gazes']))
     print
 
     print "Supernode candidates"
@@ -281,7 +264,7 @@ def stats(g):
     print [n for n in g.nodes_iter() if g.node[n]['type'] == 'lang']
     print
 
-    print [n for n in g['edx(user)'] if g['edx(user)'][n]['type'] == 'programs']
+    print [n for n in g['edx(u)'] if g['edx(u)'][n]['type'] == 'programs']
 
     print "Most popular languages"
     print sorted([(n, g.in_degree(n)) for n in g.nodes_iter() if g.node[n]['type'] == 'lang'], key=itemgetter(1), reverse=True)[:10]
@@ -301,10 +284,11 @@ def stats(g):
     print "Number of programmers who use JavaScript but not Python"
     print len(set(javascript_programmers).difference(set(python_programmers)))
 
-def saveGraph3(g):
-    nx.write_gpickle(g, "github.3")
+def saveGraph3(g, name):
+    filename = name + ".3"
+    nx.write_gpickle(g, filename)
 
-def displayGraph(g):
+def displayGraph(g, name):
     print nx.info(g)
     print
 
@@ -314,5 +298,6 @@ def displayGraph(g):
     print nx.info(h)
     print
     d = json_graph.node_link_data(h)
-    json.dump(d, open('githubRec.json', 'w'))
+    filename = name + ".json"
+    json.dump(d, open(filename, 'w'))
 
