@@ -21,7 +21,7 @@ def knn(ipaddress = "localhost",port = "9999"):
     :return:
     '''
     testNum,errorRate, errorCount, classifierData, realData = knn1.displayData(
-        'edx_knn.csv');
+        'data/edx_knn.csv');
     x = np.linspace(0,testNum,testNum)
     df = pandas.DataFrame({
     'x' : x,
@@ -45,7 +45,7 @@ def githubRec(ipaddress = "localhost",port = "8989"):
     利用每次处理后保存的图来进行恢复展示
     :return:
     '''
-    g = nx.read_gpickle("github.1")
+    g = nx.read_gpickle("data/github.1")
     print nx.info(g)
     print
 
@@ -55,7 +55,7 @@ def githubRec(ipaddress = "localhost",port = "8989"):
     print nx.info(h)
     print
     d = json_graph.node_link_data(h)
-    json.dump(d, open('githubRec.json', 'w'))
+    json.dump(d, open('data/githubRec.json', 'w'))
     # cmdstr = "python3 -m http.server %s" % port
     webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "display_githubRec"))
     # os.system(cmdstr)

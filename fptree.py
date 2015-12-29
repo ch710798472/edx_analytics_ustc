@@ -46,7 +46,7 @@ def start_test():
     测试开始函数
     :return: 频繁项集
     '''
-    dataSet = load_data('edx_fp.csv')
+    dataSet = load_data('data/edx_fp.csv')
     initSet = createInitSet(dataSet)
     fptree,headertab = createTree(initSet,50)
     frequentSet = []

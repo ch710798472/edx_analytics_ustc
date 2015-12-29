@@ -13,7 +13,7 @@ function networkx(){
 						.charge(-100)
 						.size([width, height]);//图形限定的范围
 
-				d3.json("githubRec.json", function(json) {
+				d3.json("data/githubRec.json", function(json) {
 					force.nodes(json.nodes)
 							.links(json.links)
 							.start();

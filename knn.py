@@ -86,7 +86,7 @@ def start_test():
     '''
     导入数据文件，测试knn算法开始函数
     '''
-    lc.load_csv_data()
+    # lc.load_csv_data()
     data_test('edx_knn.csv')
 
 def displayData(filename):

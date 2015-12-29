@@ -41,7 +41,7 @@ def simpleDisplay(ipaddress = "localhost",port = "9999"):
     # getPopular(g)
     # savaGraph1(g)
     # top10(g)
-    g = nx.read_gpickle("github.1")
+    g = nx.read_gpickle("data/github.1")
     print nx.info(g)
     print
 
@@ -51,7 +51,7 @@ def simpleDisplay(ipaddress = "localhost",port = "9999"):
     print nx.info(h)
     print
     d = json_graph.node_link_data(h)
-    json.dump(d, open('githubRec.json', 'w'))
+    json.dump(d, open('data/githubRec.json', 'w'))
     cmdstr = "python3 -m http.server %s" % port
     webbrowser.open_new_tab("http://%s:%s/%s.html"%(ipaddress,port, "display_githubRec"))
     os.system(cmdstr)
@@ -161,7 +161,7 @@ def savaGraph1(g,name):
     '''
     暂存图节点边的各种信息，因为对于有的star比较多的仓库计算一次不容易
     '''
-    filename = name + ".1"
+    filename = "data/" + name + ".1"
     nx.write_gpickle(g, filename)
     # 如果恢复图的信息可以这么使用，g = nx.read_gpickle("github.1")
 
@@ -205,7 +205,7 @@ def additional(stargazers,client,g):
         print "正在处理", i+1, "加星的仓库"
 
 def saveGraph2(g, name):
-    filename = name + ".2"
+    filename = "data/" + name + ".2"
     nx.write_gpickle(g, filename)
 
 def findOutgoingEdges(g):
@@ -285,7 +285,7 @@ def stats(g):
     print len(set(javascript_programmers).difference(set(python_programmers)))
 
 def saveGraph3(g, name):
-    filename = name + ".3"
+    filename = "data/" + name + ".3"
     nx.write_gpickle(g, filename)
 
 def displayGraph(g, name):
@@ -298,6 +298,6 @@ def displayGraph(g, name):
     print nx.info(h)
     print
     d = json_graph.node_link_data(h)
-    filename = name + ".json"
+    filename = "data/" + name + ".json"
     json.dump(d, open(filename, 'w'))
 
