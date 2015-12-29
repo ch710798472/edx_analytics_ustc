@@ -44,6 +44,12 @@
             font-family: sans-serif;
             font-size: 11px;
         }
+        .externText {
+            fill: blue;
+            text-anchor: left;
+            font-family: sans-serif;
+            font-size: 11px;
+        }
 
 
     </style>
@@ -87,7 +93,8 @@
             var xAxis = d3.svg.axis()
                     .scale(xScale)
                     .orient("bottom")
-                    .tickFormat(function(d,j) { return datalebel[j]; });//自定义横坐标刻度说明
+//                    .tickFormat(function(d,j) { return datalebel[j]; })
+                    ;//自定义横坐标刻度说明
 
             //定义y轴
             var yAxis = d3.svg.axis()
@@ -220,9 +227,46 @@
                     .attr("class","yaxis")
                     .attr("transform","translate(" + padding.left + "," + padding.top + ")")
                     .call(yAxis);
-            svg.selectAll("g.xaxis")   //add label for x axis
-//                    .attr("text-anchor", "end")
-                    .style({"writing-mode":"tb-rl"});
+            //改变x轴的刻度文字竖排显示
+//            svg.selectAll("g.tick.text")   //add label for x axis
+//////                    .attr("text-anchor", "end")
+//                    .style({"writing-mode":"tb-rl"})
+////                    .attr("y", function(d){
+////                        return 30;
+////                    })
+//            ;
+
+            //添加文字排序说明
+            var svg1 = d3.select("body").append("svg");
+            svg1.attr("width", 200)
+                    .attr("height", 300);
+            var texts = svg1.selectAll(".externText")
+                    .data(dataset)
+                    .enter()
+                    .append("text")
+                    .attr("class","externText")
+                    .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+                    .transition()
+                    .delay(function(d,i){
+                        return i * 200;
+                    })
+                    .duration(2000)
+                    .ease("bounce")
+                    .attr("x", function(d,i){
+                        return 0;
+                    } )
+                    .attr("dx",function(){
+                        return 10;
+                    })
+                    .attr("dy",function(d){
+                        return 30;
+                    })
+                    .text(function(d,j){
+                        return (j+1)+": "+datalebel[j] + " " + dataset[j];
+                    })
+                    .attr("y",function(d,j){
+                        return 25*j;
+                    });
         });
 
     </script>
