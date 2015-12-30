@@ -13,3 +13,51 @@
     font-size: 40px;
     color: red;
 }
+.svgmargin {
+    margin-top: 55px;
+}
+rect:hover {
+    fill: orange;
+}
+.xaxis path,
+.xaxis line{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.xaxis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+.yaxis path,
+.yaxis line{
+    fill: none;
+    stroke: black;
+    shape-rendering: crispEdges;
+}
+
+.yaxis text {
+    font-family: sans-serif;
+    font-size: 11px;
+}
+.titletext {
+    font-size: 30px ;
+    text-align:center;
+}
+.lineRect {
+    fill: steelblue;
+}
+
+.rectText {
+    fill: white;
+    text-anchor: middle;
+    font-family: sans-serif;
+    font-size: 11px;
+}
+.externText {
+    fill: blue;
+    text-anchor: left;
+    font-family: sans-serif;
+    font-size: 11px;
+}

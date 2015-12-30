@@ -64,7 +64,8 @@
         var rectPadding = 4;
         var svg = d3.select("body").append("svg");
         svg.attr("width", w)
-                .attr("height", h);
+                .attr("height", h)
+        .attr("class","svgmargin");
         var dataset = [];
         var datalebel = [];
         var maxValue = 100;
@@ -239,7 +240,8 @@
             //添加文字排序说明
             var svg1 = d3.select("body").append("svg");
             svg1.attr("width", 200)
-                    .attr("height", 300);
+                    .attr("height", 300)
+            .attr("class","svgmargin");
             var texts = svg1.selectAll(".externText")
                     .data(dataset)
                     .enter()
