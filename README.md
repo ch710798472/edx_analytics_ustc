@@ -19,7 +19,7 @@ python3 -m http.server 8001
 ```
 ###And then,open your browser with address of 127.0.0.1:8001
 
-###Your might install numpy,networkx,github,pandas,ipython-notebook tools first.
+###Your might install numpy,networkx,github,pandas,ipython-notebook,d3py tools first.
 ##Author by ch yy in SuZhou.
 ##USTC SSE
 
