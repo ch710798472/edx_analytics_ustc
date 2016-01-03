@@ -59,6 +59,6 @@ function staticimages(i){
     if(document.getElementById("myCarousel") != null)
         document.getElementById("myCarousel").style.display="none";
     if(i == 1){
-        document.getElementById("insert").innerHTML='<img src="../images/nation_count.png" height="800" width="1000" />';
+        document.getElementById("insertImages").innerHTML='<img src="../images/nation_count.png" height="800" width="1000" />';
     }
 }
