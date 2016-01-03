@@ -57,8 +57,8 @@
 <body>
 <div class="titletext" style="color:#0000ff">Most popular repositories in original case</div>
     <script type="text/javascript">
-        var w = 600;
-        var h = 300;
+        var w = 800;
+        var h = 500;
         var barPadding = 1;
         //矩形之间的空白
         var rectPadding = 4;
@@ -72,12 +72,12 @@
         //画布周边的空白
         var padding = {left:30, right:30, top:20, bottom:20};
 
-        d3.json("data/1.1.rect", function(json) {
+        d3.json("data/count_nation.json", function(json) {
             i = 0;
             for (var key in json) {
 //                console.log(d[key]);
-                datalebel[i] = json[key][0];
-                dataset[i++] = json[key][1];
+                datalebel[i] = key;
+                dataset[i++] = json[key];
             }
 
             //x轴的比例尺
@@ -139,7 +139,7 @@
                     })
                     .append("title")
                     .text(function(d,j) {
-                        return "仓库：" + datalebel[j];
+                        return "tips：" + datalebel[j];
                     });
 
             var sortOrder = false;
@@ -239,15 +239,15 @@
 
             //添加文字排序说明
             var svg1 = d3.select("body").append("svg");
-            svg1.attr("width", 200)
-                    .attr("height", 300)
+            svg1.attr("width", 300)
+                    .attr("height", 1000)
             .attr("class","svgmargin");
             var texts = svg1.selectAll(".externText")
                     .data(dataset)
                     .enter()
                     .append("text")
                     .attr("class","externText")
-                    .attr("transform","translate(" + padding.left + "," + padding.top + ")")
+                    .attr("transform","translate(" + padding.left + "," + 0 + ")")
                     .transition()
                     .delay(function(d,i){
                         return i * 200;

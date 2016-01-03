@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="js/network.js"></script>
 	<script type="text/javascript" src="js/reporect.js"></script>
 	<script type="text/javascript" src="js/langpie.js"></script>
+	<script type="text/javascript" src="js/logic.js"></script>
 </head>
 <body>
 
@@ -59,7 +60,7 @@
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">更多 <span class="caret"></span></a>
 						<ul class="dropdown-menu">
-							<li><a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Action</a></li>
+							<li><a href="#" onclick="staticimages(1)"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>count nation</a></li>
 							<li><a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Another action</a></li>
 							<li><a href="#"><span class="glyphicon glyphicon-star-empty" aria-hidden="true"></span>Something else here</a></li>
 							<li role="separator" class="divider"></li>
@@ -82,7 +83,7 @@
    <div class="carousel-inner">
       <div class="item active">
          <img src="images/1.png" alt="First slide">
-         <div class="carousel-caption" style="color:#000000;">最受欢迎的编程语言Top　10</div>
+         <div class="carousel-caption" style="color:#000000;">最受欢迎的编程语言Top 10</div>
       </div>
       <div class="item">
          <img src="images/2.png" alt="Second slide">
@@ -100,55 +101,8 @@
       data-slide="next">&rsaquo;</a>
 </div>
 <!--<div style="height:500px"></div>-->
+<div id="insert" style="margin-top:50px"></div>
 <script src="http://cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
 <script src="http://cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
-<script>
-	//响应不同的请求函数
-	function devild(i){
-		if(document.getElementById("svg1") != null)
-			document.body.removeChild(document.getElementById("svg1"));
-		if(document.getElementById("svg1.1")!= null)
-			document.body.removeChild(document.getElementById("svg1.1"));
-		if(document.getElementById("svg2") != null)
-			document.body.removeChild(document.getElementById("svg2"));
-		if(document.getElementById("svg3") != null)
-			document.body.removeChild(document.getElementById("svg3"));
-		if(document.getElementById("svg4") != null)
-			document.body.removeChild(document.getElementById("svg4"));
-		if(document.getElementById("myCarousel") != null)
-			document.getElementById("myCarousel").style.display="none";
-		if(i ==1) {
-			reporect();
-		}
-		if(i ==2) {
-			langpie();
-		}
-		if(i ==3) {
-			langpie();
-		}
-		if(i ==4) {
-			networkx();
-		}
-	}
-	$('.nav-tabs a').click(function (e) {
-		e.preventDefault()
-		$(this).tab('show')
-	})
-	function getstart(){
-		if(document.getElementById("myCarousel").style.display == "none") {
-			document.getElementById("myCarousel").style.display = "block";
-			if(document.getElementById("svg1") != null)
-				document.body.removeChild(document.getElementById("svg1"));
-			if(document.getElementById("svg1.1")!= null)
-				document.body.removeChild(document.getElementById("svg1.1"));
-			if(document.getElementById("svg2") != null)
-				document.body.removeChild(document.getElementById("svg2"));
-			if(document.getElementById("svg3") != null)
-				document.body.removeChild(document.getElementById("svg3"));
-			if(document.getElementById("svg4") != null)
-				document.body.removeChild(document.getElementById("svg4"));
-		}
-	}
-</script>
 </body>
 </html>
