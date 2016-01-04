@@ -15,6 +15,10 @@ function devild(i){
         document.body.removeChild(document.getElementById("svg4"));
     if(document.getElementById("myCarousel") != null)
         document.getElementById("myCarousel").style.display="none";
+    if(document.getElementById("insertImages") != null)
+        document.getElementById("insertImages").style.display="none";
+    if(document.getElementById("china_rank") != null)
+        document.getElementById("china_rank").style.display="none";
     if(i ==1) {
         reporect();
     }
@@ -42,6 +46,10 @@ function getstart(){
             document.body.removeChild(document.getElementById("svg3"));
         if(document.getElementById("svg4") != null)
             document.body.removeChild(document.getElementById("svg4"));
+        if(document.getElementById("insertImages") != null)
+        document.getElementById("insertImages").style.display="none";
+        if(document.getElementById("china_rank") != null)
+        document.getElementById("china_rank").style.display="none";
     }
 }
 
@@ -58,7 +66,30 @@ function staticimages(i){
         document.body.removeChild(document.getElementById("svg4"));
     if(document.getElementById("myCarousel") != null)
         document.getElementById("myCarousel").style.display="none";
+    if(document.getElementById("insertImages") != null)
+        document.getElementById("insertImages").style.display="block";
+    if(document.getElementById("china_rank") != null)
+        document.getElementById("china_rank").style.display="none";
     if(i == 1){
-        document.getElementById("insertImages").innerHTML='<img src="../images/nation_count.png" height="800" width="1000" />';
+        document.getElementById("insertImages").src="../images/nation_count.png";
+        // document.getElementById("imagesDiv").innerHTML='<img src="../images/nation_count.png" height="800" width="1000" />';
     }
+}
+function show_ranks(){
+    if(document.getElementById("svg1") != null)
+        document.body.removeChild(document.getElementById("svg1"));
+    if(document.getElementById("svg1.1")!= null)
+        document.body.removeChild(document.getElementById("svg1.1"));
+    if(document.getElementById("svg2") != null)
+        document.body.removeChild(document.getElementById("svg2"));
+    if(document.getElementById("svg3") != null)
+        document.body.removeChild(document.getElementById("svg3"));
+    if(document.getElementById("svg4") != null)
+        document.body.removeChild(document.getElementById("svg4"));
+    if(document.getElementById("myCarousel") != null)
+        document.getElementById("myCarousel").style.display="none";
+    if(document.getElementById("insertImages") != null)
+        document.getElementById("insertImages").style.display="none";
+    document.getElementById("china_rank").style.display="block";
+    show_china();
 }
