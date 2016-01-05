@@ -17,23 +17,29 @@ function show_china(){
     $("<th>Score</th>").appendTo(tr);
     $("<th>Language</th>").appendTo(tr);
     $("<th>Location</th>").appendTo(tr);
-    data=[{"login":"daimajia","name":"代码家",
-        "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"},
-        {"login":"daimajia","name":"代码家",
-            "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"},
-        {"login":"daimajia","name":"代码家",
-            "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"},
-        {"login":"daimajia","name":"代码家",
-            "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"}];
-    for (var i in data){
-        var tr = $("<tr>");
-        tr.appendTo(github_table);
-        var count = parseInt(i) + 1;
-        $("<td class='solid'>#" + count + "</td>").appendTo(tr);
-        $("<td class='solid'>" + "<img height='48' width='48' src=" + data[i]["gravatar"] + "/>" + "</td>").appendTo(tr);
-        $("<td class='solid'>" + "<a href='https://github.com/" + data[i]["login"] + "' target='_blank'>" + data[i]["login"] + "</a>" + "&nbsp(" + data[i]["name"] + ")" + "</td>").appendTo(tr);
-        $("<td class='solid'>" + parseInt(data[i]["score"]) + "</td>").appendTo(tr);
-        $("<td class='solid'>" + data[i]["language"] + "</td>").appendTo(tr);
-        $("<td class='solid'>" + data[i]["location"] + "</td>").appendTo(tr);
-    }
+    d3.json("data/user.json", function(data) {
+        //data=[{"login":"daimajia","name":"代码家",
+        //    "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"},
+        //    {"login":"daimajia","name":"代码家",
+        //        "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"},
+        //    {"login":"daimajia","name":"代码家",
+        //        "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"},
+        //    {"login":"daimajia","name":"代码家",
+        //        "score":"1024","language":"JavaScript","location":"Beijing, China","gravatar":"https://avatars.githubusercontent.com/u/779050?v=3"}];
+        for (var i in data) {
+            for(var j in data[i]){
+                console.log(data[i][j]);
+                var tr = $("<tr>");
+                tr.appendTo(github_table);
+                var count = parseInt(j) + 1;
+                $("<td class='solid'>NO." + count + "</td>").appendTo(tr);
+                $("<td class='solid'>" + "<img height='48' width='48' src=" + data[i][j]["avatar_url"] + "/>" + "</td>").appendTo(tr);
+                $("<td class='solid'>" + "<a href='https://github.com/" + data[i][j]["login"] + "' target='_blank'>" + data[i][j]["login"] + "</a>" + "</td>").appendTo(tr);
+                //+ "&nbsp(" + data[i]["name"] + ")"
+                $("<td class='solid'>" + parseInt(data[i][j]["score"]) + "</td>").appendTo(tr);
+                $("<td class='solid'>" + data[i][j]["language"] + "</td>").appendTo(tr);
+                $("<td class='solid'>" + data[i][j]["location"] + "</td>").appendTo(tr);
+            }
+        }
+    });
 }
