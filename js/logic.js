@@ -78,7 +78,7 @@ function staticimages(i){
 function show_ranks(){
     if(document.getElementById("svg1") != null)
         document.body.removeChild(document.getElementById("svg1"));
-    if(document.getElementById("svg1.1")!= null)
+    if(document.getElementById("svg1.1") != null)
         document.body.removeChild(document.getElementById("svg1.1"));
     if(document.getElementById("svg2") != null)
         document.body.removeChild(document.getElementById("svg2"));
@@ -90,6 +90,12 @@ function show_ranks(){
         document.getElementById("myCarousel").style.display="none";
     if(document.getElementById("insertImages") != null)
         document.getElementById("insertImages").style.display="none";
-    document.getElementById("china_rank").style.display="block";
-    show_china();
+    var isrepeat=false;
+    if(!isrepeat) {
+        document.getElementById("china_rank").style.display = "block";
+        show_china();
+        isrepeat = true;
+    }else{
+        document.getElementById("china_rank").style.display="block";
+    }
 }
