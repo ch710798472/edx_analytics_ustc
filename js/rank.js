@@ -32,10 +32,12 @@ function show_china(){
 
     $("<tbody class='tbody_color'>").appendTo(github_table);
 
+    var tips;
     d3.json("data/userMoreInfo.json", function(data) {
         for (var i in data) {
             //console.log(data[i]);
-            var tr = $("<tr onclick='fun()'>");
+            tips = "followers:"+data[i]["followers"]+"  following:"+data[i]["following"];
+            var tr = $("<tr class='media-tooltip' data-toggle='tooltip' data-html='true' data-original-title='<h3>"+tips+"</h3>' >");// onclick='fun()'
             tr.appendTo(github_table);
             var count = parseInt(i) + 1;
             if(data[i]["name"]==null)
@@ -72,9 +74,15 @@ function show_china(){
             $("<td>" + data[i]["updated_at"] + "</td>").appendTo(tr);
             $("<td>" + data[i]["location"] + "</td>").appendTo(tr);
         }
+        $(function () { $("[data-toggle='tooltip']").tooltip(); });
+        //修改提示
+        //$(".media-tooltip").tooltip('hide')
+        //        .attr('data-original-title', "followers:"+data[i]["followers"]+"  following:"+data[i]["following"])
+        //        .tooltip('fixTitle');
+
     });
 }
-
-function fun(){
-    console.log("1");
-}
+//
+//function fun(){
+//    //console.log("1");
+//}
